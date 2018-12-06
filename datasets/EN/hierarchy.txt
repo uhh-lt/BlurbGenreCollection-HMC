@@ -1,0 +1,147 @@
+Biography & Memoir	Arts & Entertainment Biographies & Memoirs
+Biography & Memoir	Political Figure Biographies & Memoirs
+Biography & Memoir	Historical Figure Biographies & Memoirs
+Biography & Memoir	Literary Figure Biographies & Memoirs
+Nonfiction	Biography & Memoir
+Nonfiction	Cooking
+Cooking	Regional & Ethnic Cooking
+Cooking	Cooking Methods
+Cooking	Food Memoir & Travel
+Cooking	Baking & Desserts
+Cooking	Wine & Beverage
+Nonfiction	Arts & Entertainment
+Arts & Entertainment	Art
+Arts & Entertainment	Design
+Arts & Entertainment	Film
+Arts & Entertainment	Music
+Arts & Entertainment	Performing Arts
+Arts & Entertainment	Photography
+Arts & Entertainment	Writing
+Nonfiction	Business
+Business	Economics
+Business	Management
+Business	Marketing
+Nonfiction	Crafts, Home & Garden
+Crafts, Home & Garden	Crafts & Hobbies
+Crafts, Home & Garden	Home & Garden
+Crafts, Home & Garden	Weddings
+Nonfiction	Games
+Nonfiction	Health & Fitness
+Health & Fitness	Alternative Therapies
+Health & Fitness	Diet & Nutrition
+Health & Fitness	Exercise
+Health & Fitness	Health & Reference
+Nonfiction	History
+History	Military History
+Military History	World War II Military History
+Military History	World War I Military History
+Military History	1950 – Present Military History
+History	U.S. History
+U.S. History	21st Century U.S. History
+U.S. History	20th Century U.S. History
+U.S. History	19th Century U.S. History
+U.S. History	Civil War Period
+U.S. History	Colonial/Revolutionary Period
+U.S. History	Native American History
+History	World History
+Nonfiction	Parenting
+Nonfiction	Pets
+Nonfiction	Politics
+Politics	Domestic Politics
+Politics	World Politics
+World History	African World History
+World History	Ancient World History
+World History	Asian World History
+World History	European World History
+World History	Latin American World History
+World History	Middle Eastern World History
+World History	North American World History
+Nonfiction	Popular Science
+Popular Science	Science
+Popular Science	Technology
+Nonfiction	Psychology
+Nonfiction	Reference
+Reference	Language
+Reference	Test Preparation
+Nonfiction	Religion & Philosophy
+Religion & Philosophy	Religion
+Religion & Philosophy	Philosophy
+Nonfiction	Self-Improvement
+Self-Improvement	Beauty
+Self-Improvement	Inspiration & Motivation
+Self-Improvement	Personal Finance
+Self-Improvement	Personal Growth
+Nonfiction	Sports
+Nonfiction	Travel
+Travel	Travel: Africa
+Travel	Travel: Asia
+Travel	Travel: Australia & Oceania
+Travel	Travel: Caribbean & Mexico
+Travel	Travel: Central & South America
+Travel	Travel: Europe
+Travel	Travel: Middle East
+Travel	Specialty Travel
+Travel	Travel Writing
+Travel	Travel: USA & Canada
+Fiction	Fantasy
+Fantasy	Contemporary Fantasy
+Fantasy	Epic Fantasy
+Fantasy	Fairy Tales
+Fantasy	Urban Fantasy
+Fiction	Gothic & Horror
+Fiction	Graphic Novels & Manga
+Fiction	Historical Fiction
+Fiction	Literary Fiction
+Fiction	Military Fiction
+Fiction	Mystery & Suspense
+Mystery & Suspense	Cozy Mysteries
+Mystery & Suspense	Crime Mysteries
+Mystery & Suspense	Espionage Mysteries
+Mystery & Suspense	Noir Mysteries
+Mystery & Suspense	Suspense & Thriller
+Fiction	Paranormal Fiction
+Fiction	Romance
+Romance	Contemporary Romance
+Romance	Erotica
+Romance	Historical Romance
+Romance	New Adult Romance
+Romance	Paranormal Romance
+Romance	Regency Romance
+Romance	Suspense Romance
+Romance	Western Romance
+Fiction	Science Fiction
+Science Fiction	Cyber Punk
+Science Fiction	Military Science Fiction
+Science Fiction	Space Opera
+Fiction	Spiritual Fiction
+Fiction	Western Fiction
+Fiction	Women’s Fiction
+Classics	Fiction Classics
+Classics	Literary Collections
+Classics	Literary Criticism
+Classics	Nonfiction Classics
+Children’s Books	Step Into Reading
+Children’s Books	Children’s Middle Grade Books
+Children’s Books	Children’s Activity & Novelty Books
+Children’s Books	Children’s Board Books
+Children’s Books	Children’s Boxed Sets
+Children’s Books	Children’s Chapter Books
+Children’s Books	Childrens Media Tie-In Books
+Children’s Books	Children’s Picture Books
+Children’s Middle Grade Books	Children’s Middle Grade Mystery & Detective Books
+Children’s Middle Grade Books	Children’s Middle Grade Action & Adventure Books
+Children’s Middle Grade Books	Children’s Middle Grade Fantasy & Magical Books
+Children’s Middle Grade Books	Children’s Middle Grade Historical Books
+Children’s Middle Grade Books	Children’s Middle Grade Sports Books
+Teen & Young Adult	Teen & Young Adult Action & Adventure
+Teen & Young Adult	Teen & Young Adult Mystery & Suspense
+Teen & Young Adult	Teen & Young Adult Fantasy Fiction
+Teen & Young Adult	Teen & Young Adult Nonfiction
+Teen & Young Adult	Teen & Young Adult Fiction
+Teen & Young Adult	Teen & Young Adult Social Issues
+Teen & Young Adult	Teen & Young Adult Historical Fiction
+Teen & Young Adult	Teen & Young Adult Romance
+Teen & Young Adult	Teen & Young Adult Science Fiction
+Religion & Philosophy	Bibles
+Humor
+Poetry
