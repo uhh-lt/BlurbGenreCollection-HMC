@@ -124,15 +124,17 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
     """
     global ml
     print(dataset)
-    filename = os.path.join("..","resources",dataset + "_" + "spacy_pruned")
+    path = filename = os.path.join("..","resources")
+    filename = os.path.join(path, dataset + "_" + "spacy_pruned")
     print(filename)
+
+    if not os.path.exists(path):
+        os.makedirs(path)
 
     if not os.path.exists(filename):
         if spacy:
-            if dataset == 'WOS':
-                spacy_init(language = "EN")
-            else:
-                spacy_init(language = dataset)
+            spacy_init(language = 'EN')
+
         fp = open(filename, 'wb')
         data = {}
         train, dev, test = load_data_multiLabel()
