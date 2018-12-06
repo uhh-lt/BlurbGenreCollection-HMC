@@ -59,6 +59,9 @@ However, for the first execution, please run the holdout_train mode (or any mode
 | --mode | Mode, e.g. train on dev using holdout, train on dev and train for testing(train_final) | train_holdout |
 | --classifier | Select between CNN, LSTM and capsule | capsule |
 | --lang | Datset to be used | EN |
+| --level| Max Genre Level of the hierarchy| 1 |
+
+The level setting can only be used if the program is provided with a hierarchy, otherwise the networks handle the data as a traditional multi-label classification task.
 
 General Settings:
 
