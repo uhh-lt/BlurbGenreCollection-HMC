@@ -1,6 +1,6 @@
 # BlurbGenreCollection_Classification: Multi-label text classification of writing genres using capsule networks
 
-This page contains the implementation of several neural architectures (CNN, LSTM, Capsule Network) designed for a multi-label text classification task with an underlying hierarchical structure.
+This page contains the implementation of several neural network architectures (CNN, LSTM, capsule network) designed for a multi-label text classification task with an underlying hierarchical structure.
 
 
 The neural networks take as an input a collection of lists of tokens of fixed length, that are referenced by their ID and, as well as a collection of label sets. In case a hierarchy is provided to the program, label correction methods can be applied to create consistent predictions in respect to  the underlying hierarchy. 
@@ -47,6 +47,7 @@ python -m spacy download en_core_web_sm
 ```
 cd resources && wget https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.en.vec
 ``` 
+Please ensure to adjust the path and filename in case you decide to use different embeddings.
 
 # Multi-label Classification
 
