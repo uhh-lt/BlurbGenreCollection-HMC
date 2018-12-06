@@ -4,7 +4,7 @@ import re
 import itertools
 from collections import Counter
 import io
-from loader import load_data_multiLabel, read_relations, newsgroup, load_outlier, load_rcv1, load_WOS
+from loader import load_data_multiLabel, read_relations, load_outlier
 from sklearn.preprocessing import MultiLabelBinarizer
 from predictors import clean_text, spacy_tokenizer,spacy_init, clean_str, spacy_tokenizer_basic
 from sklearn.model_selection import train_test_split
@@ -117,24 +117,6 @@ def load_outlier_and_labels(type):
     return [X_outlier, y_outlier]
 
 
-def load_data_and_labels_WOS(dev):
-    content, contentk, contentL2 = load_WOS(dev)
-    Label = np.matrix(contentk, dtype=int)
-    Label = np.transpose(Label)
-    number_of_classes_L1 = np.max(Label)+1  # number of classes in Level 1
-    Label_L2 = np.matrix(contentL2, dtype=int)
-    Label_L2 = np.transpose(Label_L2)
-    np.random.seed(7)
-    Label = np.column_stack((Label, Label_L2))
-    number_of_classes_L2 = np.zeros(number_of_classes_L1,dtype=int)
-    X_train, X_test, y_train, y_test  = train_test_split(content, Label, test_size=0.2,random_state= 0)
-    X_train, X_dev, y_train, y_dev  = train_test_split(X_train, y_train, test_size=0.2, random_state= 0)
-    train = list(zip(X_train, y_train))
-    test = list(zip(X_test, y_test))
-    dev = list(zip(X_dev, y_dev))
-    return [train ,dev, test]
-
-
 
 def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
     """
@@ -153,14 +135,7 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
                 spacy_init(language = dataset)
         fp = open(filename, 'wb')
         data = {}
-        if dataset == 'RCV1':
-            print("Loading RCV...")
-            load_rcv1(dev)
-        elif dataset == 'WOS':
-            print("Loading WOS...")
-            train, dev, test = load_data_and_labels_WOS(dev)
-        else:
-            train, dev, test = load_data_multiLabel(dataset, level, dev)
+        train, dev, test = load_data_multiLabel()
 
         X_train, y_train = ([x[0] for x in train], [x[1] for x in train])
         X_test, y_test = ([x[0] for x in test], [x[1] for x in test])
@@ -169,9 +144,9 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
         X_train = atomic_load_data(spacy, lowfreq, X_train)
         X_test = atomic_load_data(spacy, lowfreq, X_test)
         X_dev = atomic_load_data(spacy, lowfreq, X_dev)
-        y_train = [set(np.asarray(label).ravel()) for label in y_train]
-        y_dev = [set(np.asarray(label).ravel()) for label in y_dev]
-        y_test = [set(np.asarray(label).ravel()) for label in y_test]
+        # y_train = [set(np.asarray(label).ravel()) for label in y_train]
+        # y_dev = [set(np.asarray(label).ravel()) for label in y_dev]
+        # y_test = [set(np.asarray(label).ravel()) for label in y_test]
 
         data['X_train'] = X_train
         data['y_train'] = y_train
@@ -225,7 +200,6 @@ def atomic_load_data(spacy, lowfreq, x_text):
     else:
         x_text = [clean_str(sent) for sent in x_text]
         x_text = [s.split(" ") for s in x_text]
-
     if lowfreq:
         MIN_FRE = 2
         freq = {}

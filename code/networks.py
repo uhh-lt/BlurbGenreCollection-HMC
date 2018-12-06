@@ -24,9 +24,9 @@ import pickle
 
 def create_model_capsule(preload, embedding_dim, sequence_length, num_filters,
  language, num_classes, use_static, init_layer, vocabulary, learning_rate,  dense_capsule_dim, n_channels, routings = 3):
-     """
-     Implementation of capsule network
-     """
+    """
+    Implementation of capsule network
+    """
     over_time_conv = 100#50
     #capsule_dim = 16
     inputs = Input(shape=(sequence_length,), dtype='int32')
@@ -102,9 +102,9 @@ def co_occurence_weights(num_units, num_classes, language):
 
 def create_model_cnn(preload, embedding_dim, sequence_length, num_filters,
  language, num_classes, use_static, init_layer, vocabulary, learning_rate):
-     """
-     Implementation of Kims et al. CNN,
-     """
+    """
+    Implementation of Kims et al. CNN,
+    """
     filter_sizes = [3,4,5]
     drop = 0.5
     embedding = None
@@ -197,11 +197,7 @@ def pre_embedding(embedding_dim, seq_length, use_static, voc, lang, input = None
         embed_saved_file = open(embed_saved_path, 'rb')
         embedding_matrix = pickle.load(embed_saved_file)
     else:
-        if lang == 'DE':
-            w2v_german_dir = os.path.join(os.path.dirname(__file__), '../resources', 'wiki.de.vec')
-            w2v = gensim.models.KeyedVectors.load_word2vec_format(w2v_german_dir,
-              binary=False, unicode_errors='ignore')
-        else:
+        if lang == 'EN':
             w2v = {}
             w2v_english_dir = os.path.join(os.path.dirname(__file__), '../resources',
              'wiki.en.vec')

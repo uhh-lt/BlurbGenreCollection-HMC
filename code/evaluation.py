@@ -20,9 +20,9 @@ args = None
 
 
 def analysis(data, labels, output, binary_output, args_o, data_all):
-"""
-executes complete analysis pipeline
-"""
+    """
+    executes complete analysis pipeline
+    """
     global args
     args = args_o
 

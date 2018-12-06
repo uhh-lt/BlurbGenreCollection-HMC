@@ -33,9 +33,6 @@ def spacy_init(language):
     if language == "EN":
         parser = spacy.load('en_core_web_sm')
         stopwords = get_stop_words('en')
-    elif language =="DE":
-        parser = spacy.load('de_core_news_sm')
-        stopwords = get_stop_words('de')
     print("Intialization Spacy finished")
 
 

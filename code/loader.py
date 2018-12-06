@@ -16,95 +16,22 @@ import re
 #Maybe use yield, better style
 #DIRECTORY = '/home/rami/Documents/Bachelorarbeit/resources'
 
-DEST_DIRECTORY_EN = join(os.path.dirname(os.path.abspath(__file__)), '../resources', 'EN_pruned')
-
-DEST_DIRECTORY_DE = join(os.path.dirname(os.path.abspath(__file__)), '../resources', 'DE_pruned')
-
-WOS_DIRECTORY = join(os.path.dirname(os.path.abspath(__file__)), '../resources/WOS46985')
+DEST_DIRECTORY_EN = join(os.path.dirname(os.path.abspath(__file__)), '../', 'datasets')
 
 
 
-def load_data_multiLabel(language = 'EN', max_h = 1, dev = False):
+
+def load_data_multiLabel():
     """
     Loads Multilabel data with max_h hierarchy level, so 1 includes all labels that have hat max height one in label tree
     @param dev: specifies whether the dev set should be used or not
     """
-    if language == 'EN':
-        dest_directory = DEST_DIRECTORY_EN
-    elif language == 'DE':
-        dest_directory = DEST_DIRECTORY_DE
+    dest_directory = DEST_DIRECTORY_EN
 
-    return (multi_label_atomic(join(dest_directory, 'train'), max_h),
-     multi_label_atomic(join(dest_directory, 'dev'), max_h),
-      multi_label_atomic(join(dest_directory, 'test'), max_h))
+    return (multi_label_atomic(join(dest_directory, 'BlurbGenreCollection_EN_train.txt')),
+     multi_label_atomic(join(dest_directory, 'BlurbGenreCollection_EN_dev.txt')),
+      multi_label_atomic(join(dest_directory, 'BlurbGenreCollection_EN_test.txt')))
 
-
-
-def load_rcv1(dev = False):
-    from sklearn.datasets import fetch_rcv1
-    rcv1_train = fetch_rcv1(subset='train', shuffle = True, random_state = 42)
-    rcv1_train = list(zip(rcv1_train.data, [label for label in rcv1_train.target]))
-    print(rcv1_train[0])
-    sys.exit()
-
-
-def text_cleaner(text):
-    text = text.replace(".", "")
-    text = text.replace("[", " ")
-    text = text.replace(",", " ")
-    text = text.replace("]", " ")
-    text = text.replace("(", " ")
-    text = text.replace(")", " ")
-    text = text.replace("\"", "")
-    text = text.replace("-", "")
-    text = text.replace("=", "")
-    rules = [
-        {r'>\s+': u'>'},  # remove spaces after a tag opens or closes
-        {r'\s+': u' '},  # replace consecutive spaces
-        {r'\s*<br\s*/?>\s*': u'\n'},  # newline after a <br>
-        {r'</(div)\s*>\s*': u'\n'},  # newline after </p> and </div> and <h1/>...
-        {r'</(p|h\d)\s*>\s*': u'\n\n'},  # newline after </p> and </div> and <h1/>...
-        {r'<head>.*<\s*(/head|body)[^>]*>': u''},  # remove <head> to </head>
-        {r'<a\s+href="([^"]+)"[^>]*>.*</a>': r'\1'},  # show links instead of texts
-        {r'[ \t]*<[^<]*?/?>': u''},  # remove remaining tags
-        {r'^\s+': u''}  # remove spaces at the beginning
-    ]
-    for rule in rules:
-        for (k, v) in rule.items():
-            regex = re.compile(k)
-            text = regex.sub(v, text)
-        text = text.rstrip()
-        text = text.strip()
-    return text.lower()
-
-def load_WOS(dev = False):
-    WOS_text = join(WOS_DIRECTORY, "X.txt")
-    WOSL1= join(WOS_DIRECTORY, "YL1.txt")
-    #Loads only the most specfic label tag
-    WOSL2 = join(WOS_DIRECTORY, "Y.txt")
-    with open(WOS_text) as f:
-        content = f.readlines()
-        content = [text_cleaner(x) for x in content]
-    with open(WOSL1) as fk:
-        contentk = fk.readlines()
-    contentk = [x.strip() for x in contentk]
-    with open(WOSL2) as fk:
-        contentL2 = fk.readlines()
-        contentL2 = [x.strip() for x in contentL2]
-    #since WOSL1 does only label in respect to parents we have to relabel so that parent and child labels are unique
-    parent_id_map = {"0": "134", "1":"135", "2":"136", "3": "137", "4":"138", "5":"139", "6":"140"}
-    contentk = [parent_id_map[id] for id in contentk]
-    return [content, contentk, contentL2]
-
-
-
-def newsgroup():
-    from sklearn.datasets import fetch_20newsgroups
-    newsgroups_train = fetch_20newsgroups(subset='train', remove=('headers','footers','quotes'), shuffle = True, random_state = 42)
-    newsgroups_train = list(zip(newsgroups_train.data, [[label] for label in newsgroups_train.target]))
-    newsgroups_test = fetch_20newsgroups(subset='test', remove=('headers','footers','quotes'), shuffle = True, random_state = 42)
-    newsgroups_test = list(zip(newsgroups_test.data, [[label] for label in newsgroups_test.target]))
-    return [newsgroups_train, newsgroups_test]
 
 
 def read_relations(language = 'EN'):
@@ -113,7 +40,7 @@ def read_relations(language = 'EN'):
     """
     relations = set([])
     singeltons = set([])
-    REL_FILE =  join(os.path.dirname(os.path.abspath(__file__)), '../crawler', language , 'hierarchy.txt')
+    REL_FILE =  join(os.path.dirname(os.path.abspath(__file__)), '../datasets', language , 'hierarchy.txt')
     with open(REL_FILE, 'r') as f:
         lines = f.readlines()
         for line in lines:
@@ -131,9 +58,7 @@ def load_outlier(lang):
     """
     Loads low-frequency dataset
     """
-    if lang == 'DE':
-        outlier_directory = join(os.path.dirname(os.path.abspath(__file__)), '../resources', 'DE_outlier')
-    elif lang == 'EN':
+    if lang == 'EN':
         outlier_directory = join(os.path.dirname(os.path.abspath(__file__)), '../resources', 'EN_outlier')
     return multi_label_atomic(outlier_directory)
 
@@ -153,8 +78,6 @@ def read_all_genres(language = 'EN'):
     else:
         if language == 'EN':
             dest_directory = DEST_DIRECTORY_EN
-        elif language =='DE':
-            dest_directory = DEST_DIRECTORY_DE
         for split in ['train', 'dev']:
             for filename in os.listdir(join(dest_directory, split)):
                 soup = BeautifulSoup(open(join(dest_directory, split,  filename), 'rt').read(), "html.parser")
@@ -181,27 +104,25 @@ def read_all_genres(language = 'EN'):
 
 
 
-def multi_label_atomic(directory, max_h = 1):
+def multi_label_atomic(directory):
     """
     Loads labels and blurbs of dataset
     """
     data = []
-    for filename in os.listdir(directory):
+    #for filename in os.listdir(directory):
+
+    soup = BeautifulSoup(open(join(directory), 'rt').read(), "html.parser")
+    for book in soup.findAll('book'):
         categories = set([])
-        soup = BeautifulSoup(open(join(directory, filename), 'rt').read(), "html.parser")
-        for t in soup.findAll('topics'):
+        book_soup = BeautifulSoup(str(book), "html.parser")
+        for t in book_soup.findAll('topics'):
             s1 = BeautifulSoup(str(t), "html.parser")
-            structure = None
-            if max_h == 1:
-                structure = ['d0', 'd1']
-            elif max_h == 2:
-                structure = ['d0', 'd1', 'd2']
-            elif max_h == 3:
-                structure = ['d0', 'd1', 'd2', 'd3']
+            structure = ['d0', 'd1', 'd2', 'd3']
             for level in structure:
                 for t1 in s1.findAll(level):
                     categories.add(str(t1.string))
-        data.append((str(soup.find("body").string), categories))
+        data.append((str(book_soup.find("body").string), categories))
+        #print(data[0])
 
     shuffle(data)
     return data
