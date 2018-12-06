@@ -75,10 +75,13 @@ General Settings:
 | --batch_size |Set minibatch size | 32 |
 | --learning_rate |The learning rate of the classifier | 0.0005 |
 | --learning_decay |Whether to use learning decay, 1 indicates no decay, 0 max.| 1 |
+| --init_layer |Whether to initialize the final layer with label co-occurence.| False |
 | --iterations |How many classifiers to be trained, only relevant for train_n_models_final | 3 |
 | --activation_th |Activation threshold of the final layer | 0.5 |
 | --adjust_hierarchy |Postprocessing hierarchy correction | None|
 | --correction_th |Threshold for threshold-label correction method | False |
+
+Please note, that `--init_layer, --correction_th --adjust_hierarchy` are only usable, if the hierarchy of a dataset is given as input as well.
 
 
 Capsule settings:
