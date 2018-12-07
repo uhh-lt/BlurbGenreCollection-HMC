@@ -10,12 +10,11 @@ from keras.optimizers import Adam, RMSprop, Adagrad
 from keras.models import Model
 import keras.losses
 from keras.layers import Embedding
-from loader import read_all_genres
 from keras import layers, models
 import numpy as np
 import os
 import math
-from data_helpers import ml
+from data_helpers import ml, data_loader
 from capsulelayers import CapsuleLayer, PrimaryCap, Length
 from keras import backend as K
 import sys
@@ -87,7 +86,7 @@ def co_occurence_weights(num_units, num_classes, language):
     """
     parent_child = []
     w = math.sqrt(6) / math.sqrt(num_units + num_classes)
-    _, occurences = read_all_genres(language)
+    _, occurences = data_loader.read_all_genres(language)
 
     for occurence in occurences:
         if occurence[0].issubset(set(ml.classes_)):

@@ -4,7 +4,7 @@ import re
 import itertools
 from collections import Counter
 import io
-from loader import load_data_multiLabel, read_relations, load_outlier
+from loader import Blurb_Loader #load_data_multiLabel, read_relations, load_outlier
 from sklearn.preprocessing import MultiLabelBinarizer
 from predictors import clean_text, spacy_tokenizer,spacy_init, clean_str, spacy_tokenizer_basic
 from sklearn.model_selection import train_test_split
@@ -12,6 +12,8 @@ from keras.preprocessing.sequence import pad_sequences
 import pickle
 import os
 ml = MultiLabelBinarizer()
+data_loader = Blurb_Loader()
+
 UNSEEN_STRING = "-EMPTY-"
 
 
@@ -37,7 +39,7 @@ def extract_hierarchies(language):
     Returns dictionary with level and respective genres
     """
     hierarchies_inv = {}
-    relations, singletons = read_relations(language)
+    relations, singletons = data_loader.read_relations(language)
     genres = set([relation[0] for relation in relations] +
     [relation[1] for relation in relations]) | singletons
     #genres, _= read_all_genres(language, max_h)
@@ -47,7 +49,7 @@ def extract_hierarchies(language):
     for genre in genres:
         # genre_t = ml.transform([[genre]])
         # print(genre_t)
-        hierarchies_inv[genre], _ = get_level_genre(relations, genre)
+        hierarchies_inv[genre], _ = data_loader.get_level_genre(relations, genre)
     hierarchies = {}
     for key,value in hierarchies_inv.items():
         if not value in hierarchies:
@@ -61,7 +63,7 @@ def remove_genres_not_level(language, labels, outputs, level, exact_level):
     """
     Removes genres from output that are not on the respective level of the hierarchy
     """
-    hierarchies, _ = extract_hierarchies(language)
+    hierarchies, _ = data_loader.extract_hierarchies(language)
     all_genres = set([])
     if exact_level:
         all_genres = all_genres | set(hierarchies[level])
@@ -91,33 +93,6 @@ def remove_genres_not_level(language, labels, outputs, level, exact_level):
 
 
 
-def load_outlier_and_labels(type):
-    """
-    preprocessing of blurbs and labels into binary ones for low-frequency dataset
-    """
-    filename = os.path.join("..","resources", type + "_outlier_spacy_pruned")
-    if not os.path.exists(filename):
-        spacy_init(language = type)
-        fp = open(filename, 'wb')
-        outlier = load_outlier(type)
-        X_outlier, y_outlier = ([x[0] for x in outlier], [x[1] for x in outlier])
-        X_outlier = atomic_load_data(True, True, X_outlier)
-        data = {}
-        data['X_outlier'] = X_outlier
-        data['y_outlier'] = y_outlier
-        pickle.dump(data, fp)
-    else:
-        with open(filename, 'rb') as fp:
-            data = pickle.load(fp)
-            X_outlier = data['X_outlier']
-            y_outlier = data['y_outlier']
-    print("Finished loading outlier")
-    y_outlier = ml.transform(y_outlier)
-    print("Example outlier: ", X_outlier[0])
-    return [X_outlier, y_outlier]
-
-
-
 def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
     """
     preprocessing of blurbs and labels of dataset
@@ -137,7 +112,7 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
 
         fp = open(filename, 'wb')
         data = {}
-        train, dev, test = load_data_multiLabel()
+        train, dev, test = data_loader.load_data_multiLabel()
 
         X_train, y_train = ([x[0] for x in train], [x[1] for x in train])
         X_test, y_test = ([x[0] for x in test], [x[1] for x in test])
@@ -251,8 +226,8 @@ def adjust_hierarchy_threshold(output, output_b, language, max_h = 1, threshold 
     """
     print("Adjusting Hierarchy")
     print(len(output[0]))
-    relations,_ = read_relations(language)
-    hierarchy, _ = extract_hierarchies(language)
+    relations,_ = data_loader.read_relations(language)
+    hierarchy, _ = data_loader.extract_hierarchies(language)
     new_output = []
     outputs = ml.inverse_transform(output_b)
     for i,output_el in enumerate(outputs):
@@ -293,8 +268,8 @@ def adjust_hierarchy(output_b, language, max_h = 1, mode = 'semi_transitive'):
     """
     global ml
     print("Adjusting Hierarchy")
-    relations,_ = read_relations(language)
-    hierarchy, _ = extract_hierarchies(language)
+    relations,_ = data_loader.read_relations(language)
+    hierarchy, _ = data_loader.extract_hierarchies(language)
     new_output = []
     outputs = ml.inverse_transform(output_b)
     for output in outputs:

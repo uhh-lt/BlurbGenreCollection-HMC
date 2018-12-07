@@ -6,11 +6,10 @@ from sklearn.metrics import confusion_matrix
 import numpy as np
 import os
 import sys
-from data_helpers import ml, remove_genres_not_level, adjust_hierarchy, adjust_hierarchy_threshold, load_data
+from data_helpers import ml, remove_genres_not_level, adjust_hierarchy, adjust_hierarchy_threshold, load_data, data_loader
 from sklearn.metrics import f1_score, accuracy_score, recall_score, precision_score
 import operator
 import itertools
-from loader import read_all_genres
 import math
 from keras.models import load_model
 from keras import backend as K
@@ -109,7 +108,7 @@ def evaluate_frequency_performance(label, output, actual_labels, output_labels, 
     creates dictionary: Score for each label combination in trainingset
     Can additionally plot that with regressioncurve
     """
-    _, occurences = read_all_genres(lang)
+    _, occurences = data_loader.read_all_genres(lang)
     predicted_results = []
     print(len(occurences))
     for occurence in occurences:
