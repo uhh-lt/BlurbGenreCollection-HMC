@@ -53,7 +53,7 @@ python -m spacy download en_core_web_sm
 ```
 cd resources && wget https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.en.vec
 ``` 
-Please ensure to adjust the path and filename in case you decide to use different embeddings.
+We recommend to put them into a ./resources folder. Please ensure to adjust the path and filename in case you decide to use different embeddings/path.
 
 # Multi-label Classification
 
