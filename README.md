@@ -29,7 +29,6 @@ The system was tested on Debian/Ubuntu Linux with a GTX 1080TI and TITAN X.
 
       ```
       cd BlurbGenreCollection_Classification && wget https://www.inf.uni-hamburg.de/en/inst/ab/lt/resources/data/blurb-genre-collection/blurb-genre-collection-en.zip && unzip blurb-genre-collection-en.zip -d datasets
-      Decompress the .zip
       ```
   
    2. Or install your own Dataset:
