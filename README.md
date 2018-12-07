@@ -23,12 +23,19 @@ The system was tested on Debian/Ubuntu Linux with a GTX 1080TI and TITAN X.
   https://github.com/Raldir/BlurbGenreCollection_Classification.git
   ```
   
-2. Install the BlurbGenreCollection-Dataset:
+2. Install a dataset
 
-```
-cd BlurbGenreCollection_Classification && wget https://www.inf.uni-hamburg.de/en/inst/ab/lt/resources/data/blurb-genre-collection/blurb-genre-collection-en.zip && unzip blurb-genre-collection-en.zip -d datasets
-Decompress the .zip
-```
+   1. Either the BlurbGenreCollection-Dataset:
+
+      ```
+      cd BlurbGenreCollection_Classification && wget https://www.inf.uni-hamburg.de/en/inst/ab/lt/resources/data/blurb-genre-collection/blurb-genre-collection-en.zip && unzip blurb-genre-collection-en.zip -d datasets
+      Decompress the .zip
+      ```
+  
+   2. Or install your own Dataset:
+     The abstract class `loader_abstract` needs to be extended by your custom class that loads your dataset. Please adjust the return values of the methods to match the descriptions. Furthermore, replace the following line with the name of your new loader_class: ` data_helpers.py: Line 15`
+         
+
   
 3. Install project packages:
 
@@ -75,10 +82,13 @@ General Settings:
 | --batch_size |Set minibatch size | 32 |
 | --learning_rate |The learning rate of the classifier | 0.0005 |
 | --learning_decay |Whether to use learning decay, 1 indicates no decay, 0 max.| 1 |
+| --init_layer |Whether to initialize the final layer with label co-occurence.| False |
 | --iterations |How many classifiers to be trained, only relevant for train_n_models_final | 3 |
 | --activation_th |Activation threshold of the final layer | 0.5 |
 | --adjust_hierarchy |Postprocessing hierarchy correction | None|
 | --correction_th |Threshold for threshold-label correction method | False |
+
+Please note, that `--init_layer, --correction_th --adjust_hierarchy` are only usable, if the hierarchy of a dataset is given as input as well.
 
 
 Capsule settings:
