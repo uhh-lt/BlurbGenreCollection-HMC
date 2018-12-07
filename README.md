@@ -33,7 +33,7 @@ The system was tested on Debian/Ubuntu Linux with a GTX 1080TI and TITAN X.
       ```
   
    2. Or install your own Dataset:
-     The abstract class `loader_abstract` needs to be extended by your custom class that loads your dataset. Please adjust the return values of the methods to match the descriptions. Furthermore, replace the following line with the name of your new loader_class: data_helpers.py: Line 15
+     The abstract class `loader_abstract` needs to be extended by your custom class that loads your dataset. Please adjust the return values of the methods to match the descriptions. Furthermore, replace the following line with the name of your new loader_class: ` data_helpers.py: Line 15`
          
 
   
