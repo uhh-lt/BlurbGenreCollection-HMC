@@ -347,7 +347,7 @@ def run():
             model = create_model(preload = False)
             train(model, early_stopping = args.use_early_stop, validation = True, save = False)
 
-            result_hierarchies = test(model, data_l = data['X_test'], label = data['y_test'])
+            result_hierarchies = test(model, data_l = data['X_dev'], label = data['y_dev'])
             for results in result_hierarchies:
                 if results in results_dict:
                     results_dict[results].append(result_hierarchies[results])
