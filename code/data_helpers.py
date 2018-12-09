@@ -1,3 +1,6 @@
+"""
+Author: Rami Aly, E-mail: `rami.aly@outlook.com`
+"""
 import numpy as np
 np.set_printoptions(threshold=np.nan)
 import re
@@ -49,7 +52,7 @@ def extract_hierarchies(language):
     for genre in genres:
         # genre_t = ml.transform([[genre]])
         # print(genre_t)
-        hierarchies_inv[genre], _ = data_loader.get_level_genre(relations, genre)
+        hierarchies_inv[genre], _ = get_level_genre(relations, genre)
     hierarchies = {}
     for key,value in hierarchies_inv.items():
         if not value in hierarchies:
@@ -63,7 +66,7 @@ def remove_genres_not_level(language, labels, outputs, level, exact_level):
     """
     Removes genres from output that are not on the respective level of the hierarchy
     """
-    hierarchies, _ = data_loader.extract_hierarchies(language)
+    hierarchies, _ = extract_hierarchies(language)
     all_genres = set([])
     if exact_level:
         all_genres = all_genres | set(hierarchies[level])
@@ -227,7 +230,7 @@ def adjust_hierarchy_threshold(output, output_b, language, max_h = 1, threshold 
     print("Adjusting Hierarchy")
     print(len(output[0]))
     relations,_ = data_loader.read_relations(language)
-    hierarchy, _ = data_loader.extract_hierarchies(language)
+    hierarchy, _ = extract_hierarchies(language)
     new_output = []
     outputs = ml.inverse_transform(output_b)
     for i,output_el in enumerate(outputs):
@@ -269,7 +272,7 @@ def adjust_hierarchy(output_b, language, max_h = 1, mode = 'semi_transitive'):
     global ml
     print("Adjusting Hierarchy")
     relations,_ = data_loader.read_relations(language)
-    hierarchy, _ = data_loader.extract_hierarchies(language)
+    hierarchy, _ = extract_hierarchies(language)
     new_output = []
     outputs = ml.inverse_transform(output_b)
     for output in outputs:

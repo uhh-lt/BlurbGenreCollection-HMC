@@ -1,3 +1,6 @@
+"""
+Author: Rami Aly, E-mail: `rami.aly@outlook.com`
+"""
 import gensim
 from keras.constraints import max_norm
 from keras.models import load_model
@@ -102,7 +105,7 @@ def co_occurence_weights(num_units, num_classes, language):
 def create_model_cnn(preload, embedding_dim, sequence_length, num_filters,
  language, num_classes, use_static, init_layer, vocabulary, learning_rate):
     """
-    Implementation of Kims et al. CNN,
+    Implementation of Kims et al. CNN, 
     """
     filter_sizes = [3,4,5]
     drop = 0.5

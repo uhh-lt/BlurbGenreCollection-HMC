@@ -1,3 +1,7 @@
+"""
+Author: Rami Aly, E-mail: `rami.aly@outlook.com`
+"""
+
 from keras.callbacks import ModelCheckpoint
 import operator
 from data_helpers import load_data, extract_hierarchies, remove_genres_not_level

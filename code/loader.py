@@ -1,3 +1,6 @@
+"""
+Author: Rami Aly, E-mail: `rami.aly@outlook.com`
+"""
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 

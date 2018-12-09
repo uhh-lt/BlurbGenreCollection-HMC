@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+"""
+Author: Rami Aly, E-mail: `rami.aly@outlook.com`
+"""
 
 from sklearn.feature_extraction.stop_words import ENGLISH_STOP_WORDS as stopwords
 import string

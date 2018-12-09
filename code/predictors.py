@@ -1,8 +1,7 @@
 """
 Python 3.x
-@author Rami Aly, E-mail: 'rami.aly@outlook.com'
+Author: Rami Aly, E-mail: `rami.aly@outlook.com`
 """
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 from stop_words import get_stop_words

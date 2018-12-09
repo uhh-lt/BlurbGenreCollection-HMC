@@ -1,5 +1,7 @@
+"""
+Author: Rami Aly, E-mail: `rami.aly@outlook.com`
+"""
 class Loader_Interface:
-
 
     """
     Loads text and labels of a dataset

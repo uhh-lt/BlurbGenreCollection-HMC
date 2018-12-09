@@ -1,3 +1,7 @@
+"""
+Author: Rami Aly, E-mail: `rami.aly@outlook.com`
+"""
+
 import matplotlib
 import scipy.stats
 matplotlib.use('Agg')
