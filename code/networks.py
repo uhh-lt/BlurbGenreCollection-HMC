@@ -89,7 +89,7 @@ def co_occurence_weights(num_units, num_classes, language):
     """
     parent_child = []
     w = math.sqrt(6) / math.sqrt(num_units + num_classes)
-    _, occurences = data_loader.read_all_genres(language)
+    _, occurences = data_loader.read_all_genres()
 
     for occurence in occurences:
         if occurence[0].issubset(set(ml.classes_)):
@@ -105,7 +105,7 @@ def co_occurence_weights(num_units, num_classes, language):
 def create_model_cnn(preload, embedding_dim, sequence_length, num_filters,
  language, num_classes, use_static, init_layer, vocabulary, learning_rate):
     """
-    Implementation of Kims et al. CNN, 
+    Implementation of Kims et al. CNN,
     """
     filter_sizes = [3,4,5]
     drop = 0.5
@@ -199,11 +199,15 @@ def pre_embedding(embedding_dim, seq_length, use_static, voc, lang, input = None
         embed_saved_file = open(embed_saved_path, 'rb')
         embedding_matrix = pickle.load(embed_saved_file)
     else:
+        w2v = {}
         if lang == 'EN':
-            w2v = {}
             w2v_english_dir = os.path.join(os.path.dirname(__file__), '../resources',
              'wiki.en.vec')
             w2v = gensim.models.KeyedVectors.load_word2vec_format(w2v_english_dir, binary=False)
+        elif lang =='COMPQ':
+            w2v_rus_dir = os.path.join(os.path.dirname(__file__), '../resources',
+             'wiki.ru.vec')
+            w2v = gensim.models.KeyedVectors.load_word2vec_format(w2v_rus_dir, binary=False)
 
         print("Embedding Voc Size", len(w2v.wv.vocab))
         print("The unseen string -EMPTY- is not in the embedding: ", "-EMPTY-" not in w2v.wv.vocab)

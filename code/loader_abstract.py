@@ -1,6 +1,12 @@
 """
 Author: Rami Aly, E-mail: `rami.aly@outlook.com`
 """
+
+import os
+import string
+import operator
+import pickle
+
 class Loader_Interface:
 
     """
@@ -30,7 +36,7 @@ class Loader_Interface:
         frequency = []
         hierarchy = set([])
         co_occurences_path =  os.path.join(os.path.dirname(__file__),
-         '../resources', 'co_occurences')
+         '../resources', 'co_occurences_COMPQ')
         if os.path.exists(co_occurences_path):
             co_occurences_file = open(co_occurences_path, 'rb')
             occurences, frequency = pickle.load(co_occurences_file)

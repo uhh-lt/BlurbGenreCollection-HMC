@@ -8,6 +8,7 @@ import itertools
 from collections import Counter
 import io
 from loader import Blurb_Loader #load_data_multiLabel, read_relations, load_outlier
+from comp_questions_loader import CompQ_Loader
 from sklearn.preprocessing import MultiLabelBinarizer
 from predictors import clean_text, spacy_tokenizer,spacy_init, clean_str, spacy_tokenizer_basic
 from sklearn.model_selection import train_test_split
@@ -15,7 +16,7 @@ from keras.preprocessing.sequence import pad_sequences
 import pickle
 import os
 ml = MultiLabelBinarizer()
-data_loader = Blurb_Loader()
+data_loader = None
 
 UNSEEN_STRING = "-EMPTY-"
 
@@ -42,7 +43,7 @@ def extract_hierarchies(language):
     Returns dictionary with level and respective genres
     """
     hierarchies_inv = {}
-    relations, singletons = data_loader.read_relations(language)
+    relations, singletons = data_loader.read_relations()
     genres = set([relation[0] for relation in relations] +
     [relation[1] for relation in relations]) | singletons
     #genres, _= read_all_genres(language, max_h)
@@ -70,6 +71,7 @@ def remove_genres_not_level(language, labels, outputs, level, exact_level):
     all_genres = set([])
     if exact_level:
         all_genres = all_genres | set(hierarchies[level])
+        print("Labels on current hierarchy", all_genres)
     else:
         for i in range(level + 1):
             all_genres = all_genres | set(hierarchies[i])
@@ -178,7 +180,8 @@ def atomic_load_data(spacy, lowfreq, x_text):
         x_text = [spacy_tokenizer_basic(x) for x in x_text]
 
     else:
-        x_text = [clean_str(sent) for sent in x_text]
+        #no string cleaning for russian
+        #x_text = [clean_str(sent) for sent in x_text]
         x_text = [s.split(" ") for s in x_text]
     if lowfreq:
         MIN_FRE = 2
@@ -229,7 +232,7 @@ def adjust_hierarchy_threshold(output, output_b, language, max_h = 1, threshold 
     """
     print("Adjusting Hierarchy")
     print(len(output[0]))
-    relations,_ = data_loader.read_relations(language)
+    relations,_ = data_loader.read_relations()
     hierarchy, _ = extract_hierarchies(language)
     new_output = []
     outputs = ml.inverse_transform(output_b)
@@ -271,7 +274,7 @@ def adjust_hierarchy(output_b, language, max_h = 1, mode = 'semi_transitive'):
     """
     global ml
     print("Adjusting Hierarchy")
-    relations,_ = data_loader.read_relations(language)
+    relations,_ = data_loader.read_relations()
     hierarchy, _ = extract_hierarchies(language)
     new_output = []
     outputs = ml.inverse_transform(output_b)
@@ -342,6 +345,13 @@ def load_data(spacy=False, lowfreq= True, max_sequence_length = 200, type = 'EN'
     Pipeline for loading the feature sets for all data splits
     Also applies padding and replacement of unknown words
     """
+    global data_loader
+    if type == 'EN':
+        data_loader = Blurb_Loader()
+    elif type =='COMPQ':
+        data_loader = CompQ_Loader()
+
+
     if dev:
         data  = load_data_and_labels(spacy, lowfreq, type, level, dev)
         X_train, X_dev, X_test, y_train, y_dev, y_test = data

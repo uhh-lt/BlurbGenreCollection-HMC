@@ -61,3 +61,4 @@ resources/
 code/data
 crawler/
 datasets
+code/comp_questions_loader.py

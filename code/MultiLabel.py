@@ -22,10 +22,8 @@ import os
 from predictors import predictors, vectorizerSpacy, spacy_init
 from os.path import join
 import json
-from loader import load_data_multiLabel
 import codecs
 import argparse
-from BaseClassifier import BaseClassifier
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.externals import joblib
@@ -215,7 +213,7 @@ def main():
     global args
     parser = argparse.ArgumentParser(description="MultiLabel classification of blurbs")
     parser.add_argument('--mode', type=str, default='train', choices=['train_test','cv', 'gridsearch', 'root'], help="Mode of the system.")
-    parser.add_argument('--lang', type=str, default='train', choices=['EN','DE', 'WOS', 'TRIAL'], help=" Dataset to use")
+    parser.add_argument('--lang', type=str, default='train', choices=['EN','DE', 'WOS', 'TRIAL', 'COMPQ'], help=" Dataset to use")
     parser.add_argument('--level', type=int, choices=[0,1,2,3], help= "Level of hierarchy")
     parser.add_argument('--dev', type=bool, default= False, help=" Dataset use validation")
 

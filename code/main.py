@@ -118,7 +118,7 @@ def train(model, save = True, early_stopping = True, validation = True):
     lr_decay = LearningRateScheduler(schedule=lambda epoch: args.learning_rate * (args.learning_decay ** epoch))
     callbacks_list.append(lr_decay)
     if early_stopping:
-        early_stopping = EarlyStopping(monitor='val_loss', min_delta=-0.001, patience=3, verbose=0, mode='auto')
+        early_stopping = EarlyStopping(monitor='val_loss', min_delta=0.001, patience=3, verbose=0, mode='auto')
         callbacks_list.append(early_stopping)
     if validation:
         metrics_callback = Metrics_eval(validation_data = (data['X_dev'], data['y_dev']))
@@ -149,6 +149,7 @@ def test(model, data_l, label, do_analysis = False):
     results_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),
          '../resources', args.filename + '.output')
     if args.mode == 'evaluate' and os.path.exists(results_path):
+        print("Loading model output...")
         output_file = open(results_path, 'rb')
         _,_,_,output,_ = pickle.load(output_file)
     else:
@@ -167,7 +168,7 @@ def test(model, data_l, label, do_analysis = False):
          language = args.lang, max_h = args.level, threshold = args.correction_th)
 
     results = {}
-    if args.execute_all:
+    if not args.execute_all:
         f1 = f1_score(label, output, average='micro')
         f1_macro = f1_score(label, output, average='macro')
         recall = recall_score(label, output, average='micro')
@@ -179,6 +180,8 @@ def test(model, data_l, label, do_analysis = False):
             levels = [0,1,2]
         elif args.lang =='EN':
             levels = [0,1,2,3]
+        else:
+            level = [0, 1]
         for level in levels:
             print("Evaluating at level " + str(level) + "...")
             labels_pruned, outputs_pruned = remove_genres_not_level(args.lang,
@@ -192,6 +195,11 @@ def test(model, data_l, label, do_analysis = False):
             precision =  precision_score(labels_pruned, outputs_pruned, average='micro')
             accuracy = accuracy_score(labels_pruned, outputs_pruned)
             results[level] = ([f1, recall, precision, accuracy])
+            print("F1: " + str(f1))
+            print("F1_macro: " + str(f1_macro))
+            print("Recall: " + str(recall))
+            print("Precision: " + str(precision))
+            print("Accuracy: " + str(accuracy))
 
     print("F1: " + str(f1))
     print("F1_macro: " + str(f1_macro))
@@ -277,7 +285,7 @@ def main():
     parser = argparse.ArgumentParser(description="CNN for blurbs")
     parser.add_argument('--mode', type=str, default='train_holdout', choices=['train_holdout', 'train_n_models_final', 'train_final', 'evaluate','cv', 'plot', 'train_holdout', 'outlier'], help="Mode of the system.")
     parser.add_argument('--classifier', type=str, default='cnn', choices=['cnn','lstm', 'capsule'], help="Classifier architecture of the system.")
-    parser.add_argument('--lang', type=str, default='EN', choices=['DE','EN', 'RCV1', 'WOS'], help="Which dataset to use")
+    parser.add_argument('--lang', type=str, default='EN', choices=['DE','EN', 'RCV1', 'WOS', 'COMPQ'], help="Which dataset to use")
     parser.add_argument('--dense_capsule_dim', type=int, default=16, help = 'Capsule dim of dense layer')
     parser.add_argument('--n_channels', type=int, default=50, help = 'number channels of primary capsules')
     parser.add_argument('--batch_size', type=int, default=32, help = 'Set minibatch size')
@@ -298,6 +306,8 @@ def main():
     parser.add_argument('--learning_decay', type=float, default = 1., help = 'Use decay in learning, 1 is None')
     parser.add_argument('--learning_rate', type = float, default = 0.0005, help = 'Set learning rate of network')
     parser.add_argument('--execute_all', action='store_true', default = False, help = 'Executes evaluation on every level of hierarchy')
+    parser.add_argument('--whitespace_sep', action='store_true', default = False, help = 'Uses whitespace seperation instead of spacy')
+    parser.add_argument('--filter_low_freq', action='store_true', default = False, help = 'Filter low frequency words from dataset')
     #0.001
 
     args = parser.parse_args()
@@ -319,7 +329,7 @@ def run():
         init_data(dev = False)
         model = create_model(preload = False)
         train(model,  early_stopping = args.use_early_stop, validation = False)
-        test(model, data_l = data['X_test'], label = data['X_test'])
+        test(model, data_l = data['X_test'], label = data['y_test'])
 
     #DEPRECIATED - runs crossvalidation
     elif args.mode =='cv':
@@ -407,20 +417,21 @@ def init_data(dev, outlier = False):
     Initilizes the data(splits) and vocabulary
     """
     global data
-
+    use_spacy = not args.whitespace_sep
+    use_low_freq = not args.filter_low_freq
     if dev:
-        X_train, y_train, X_dev, y_dev, X_test, y_test, vocabulary, vocabulary_inv =load_data(spacy = True,
+        X_train, y_train, X_dev, y_dev, X_test, y_test, vocabulary, vocabulary_inv =load_data(spacy = use_spacy, lowfreq = use_low_freq,
          max_sequence_length =  args.sequence_length, type = args.lang, level = args.level, dev = dev)
         data['X_dev'] = X_dev
         data['y_dev'] = y_dev
 
     elif outlier:
-        X_train, y_train, X_test, y_test, vocabulary, vocabulary_inv, X_outlier, y_outlier =load_data(spacy = True,
+        X_train, y_train, X_test, y_test, vocabulary, vocabulary_inv, X_outlier, y_outlier =load_data(spacy = use_spacy, lowfreq = use_low_freq,
          max_sequence_length =  args.sequence_length, type = args.lang, level = args.level, dev = False, outlier = True)
         data['X_outlier'] = X_outlier
         data['y_outlier'] = y_outlier
     else:
-        X_train, y_train, X_test, y_test, vocabulary, vocabulary_inv = load_data(spacy = True,
+        X_train, y_train, X_test, y_test, vocabulary, vocabulary_inv = load_data(spacy = use_spacy, lowfreq = use_low_freq,
          max_sequence_length =  args.sequence_length, type = args.lang, level = args.level, dev = dev)
 
     data['X_train'] = X_train

@@ -10,7 +10,7 @@ from sklearn.metrics import confusion_matrix
 import numpy as np
 import os
 import sys
-from data_helpers import ml, remove_genres_not_level, adjust_hierarchy, adjust_hierarchy_threshold, load_data, data_loader
+from data_helpers import ml, remove_genres_not_level, adjust_hierarchy, adjust_hierarchy_threshold, load_data
 from sklearn.metrics import f1_score, accuracy_score, recall_score, precision_score
 import operator
 import itertools
@@ -112,7 +112,10 @@ def evaluate_frequency_performance(label, output, actual_labels, output_labels, 
     creates dictionary: Score for each label combination in trainingset
     Can additionally plot that with regressioncurve
     """
-    _, occurences = data_loader.read_all_genres(lang)
+    print(len(actual_labels))
+    print(len(output_labels))
+    from data_helpers import data_loader
+    _, occurences = data_loader.read_all_genres()
     predicted_results = []
     print(len(occurences))
     for occurence in occurences:
@@ -123,12 +126,20 @@ def evaluate_frequency_performance(label, output, actual_labels, output_labels, 
             #print(actual_labels[i], occurence[0])
             if set(actual_labels[i]) == occurence[0]:
                 curr_gen = label[i]
+                #print(curr_gen)
                 predictions.append(predict)
 
+        if len(predictions) == 0:
+            predicted_results.append(0.)
+            continue
         for i in range(len(predictions)):
             actual.append(occurence[0])
         actual =  ml.transform(actual)
-        score = f1_score(np.array(actual), np.array(predictions), average='micro')
+        #print(len(actual))
+        #print(len(predictions))
+        # print(np.array(actual))
+        # print(np.array(predictions))
+        score = f1_score(np.array(actual), np.array(predictions).round(), average='micro')
         predicted_results.append(score)
     print(len(predicted_results))
     occurence_freq = [occurence[1] for occurence in occurences]
@@ -159,6 +170,8 @@ def evaluate_level_performance(label, output):
         levels = [0,1,2]
     elif args.lang =='EN':
         levels = [0,1,2,3]
+    else:
+        levels = [0,1]
 
     for level in levels:
         labels_pruned, outputs_pruned = remove_genres_not_level(args.lang,
@@ -196,16 +209,28 @@ def create_confusion_matrix(actual_labels, output_labels, display_top_n = 10, re
     else:
         occurences = sorted(frequencies.items(), key=operator.itemgetter(1), reverse = False)
     total_occurences = len(occurences)
-    occurences_s = [occurence[0] for occurence in occurences][:display_top_n] + ['Other']
-    occurences_s = [element if element != '' else 'None' for element in occurences_s]
+
+    occurences_s =  ['Non-Comparative'] + [occurence[0] for occurence in occurences][:display_top_n] + ['Other']
+    occurences_s.remove('')
+    #occurences_s = [element if element != '' else 'Non-Comparative' for element in occurences_s]
     occurences = [occurence[0].split(";") for occurence in occurences][:display_top_n]
+    #print(occurences_s)
+    #print(occurences)
     if [''] in occurences:
         occurences[occurences.index([''])] = []
     output_labels_id = [';'.join(label) if list(label) in occurences else
      'Other' for label in output_labels]
+    print(output_labels_id[:10])
     actual_labels_id = [';'.join(label) if list(label) in occurences else
      'Other' for label in actual_labels]
+    # output_labels_id = [';'.join(label) for label in output_labels if list(label) in occurences]
+    # print(output_labels_id[:10])
+    # actual_labels_id = [';'.join(label) for label in actual_labels if list(label) in occurences]
+    output_labels_id = ["Non-Comparative" if element == '' else element for element in output_labels_id]
+    actual_labels_id= ["Non-Comparative" if element == '' else element for element in actual_labels_id]
+    #print(actual_labels_id[:10])
     conf_matrix = confusion_matrix(actual_labels_id, output_labels_id, occurences_s)
+    #print(conf_matrix)
     plot_confusion_matrix(conf_matrix, classes=occurences_s,
      title='Confusion matrix. Most ' + str(display_top_n) + " frequent label-combinations out of " +  str(total_occurences) + ' label co-occurences', reverse = reverse)
 
@@ -220,7 +245,7 @@ def plot_confusion_matrix(cm, classes,
     Plots confusion matrix
     Normalization can be applied by setting `normalize=True`.
     """
-
+    #normalize = False
     if normalize:
         cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
         print("Normalized confusion matrix")
@@ -248,7 +273,7 @@ def plot_confusion_matrix(cm, classes,
     plt.ylabel('True label')
     plt.xlabel('Predicted label')
     plt.savefig(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-    '../resources', args.filename + "_" + str(reverse) + "_" + str(args.level) + '.pdf'))
+    '../resources', args.filename + "_" + str(reverse) + "_" + str(args.level) + '.png'))
 
 
 

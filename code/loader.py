@@ -16,7 +16,7 @@ import operator
 from random import shuffle
 import pickle
 import re
-from loader_abstract import Loader_interface
+from loader_abstract import Loader_Interface
 #Maybe use yield, better style
 #DIRECTORY = '/home/rami/Documents/Bachelorarbeit/resources'
 
