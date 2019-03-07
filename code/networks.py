@@ -204,10 +204,6 @@ def pre_embedding(embedding_dim, seq_length, use_static, voc, lang, input = None
             w2v_english_dir = os.path.join(os.path.dirname(__file__), '../resources',
              'wiki.en.vec')
             w2v = gensim.models.KeyedVectors.load_word2vec_format(w2v_english_dir, binary=False)
-        elif lang =='COMPQ':
-            w2v_rus_dir = os.path.join(os.path.dirname(__file__), '../resources',
-             'wiki.ru.vec')
-            w2v = gensim.models.KeyedVectors.load_word2vec_format(w2v_rus_dir, binary=False)
 
         print("Embedding Voc Size", len(w2v.wv.vocab))
         print("The unseen string -EMPTY- is not in the embedding: ", "-EMPTY-" not in w2v.wv.vocab)

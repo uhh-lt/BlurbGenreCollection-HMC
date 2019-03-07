@@ -8,7 +8,6 @@ import itertools
 from collections import Counter
 import io
 from loader import Blurb_Loader #load_data_multiLabel, read_relations, load_outlier
-from comp_questions_loader import CompQ_Loader
 from sklearn.preprocessing import MultiLabelBinarizer
 from predictors import clean_text, spacy_tokenizer,spacy_init, clean_str, spacy_tokenizer_basic
 from sklearn.model_selection import train_test_split
@@ -348,8 +347,6 @@ def load_data(spacy=False, lowfreq= True, max_sequence_length = 200, type = 'EN'
     global data_loader
     if type == 'EN':
         data_loader = Blurb_Loader()
-    elif type =='COMPQ':
-        data_loader = CompQ_Loader()
 
 
     if dev:

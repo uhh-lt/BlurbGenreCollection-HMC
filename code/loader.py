@@ -26,6 +26,11 @@ DEST_DIRECTORY_EN = join(os.path.dirname(os.path.abspath(__file__)), '../', 'dat
 
 class Blurb_Loader(Loader_Interface):
 
+
+    def __init__(self):
+        self._setName("EN")
+
+
     def load_data_multiLabel(self):
         """
         Loads Multilabel data with max_h hierarchy level, so 1 includes all labels that have hat max height one in label tree
@@ -65,47 +70,6 @@ class Blurb_Loader(Loader_Interface):
         """
         outlier_directory = join(os.path.dirname(os.path.abspath(__file__)), '../resources', 'EN_outlier')
         return multi_label_atomic(outlier_directory)
-
-
-    # def read_all_genres(self):
-    #     """
-    #     Loads list of label-cooccurences with frequency, sorted in descending order
-    #     """
-    #     occurences = []
-    #     frequency = []
-    #     hierarchy = set([])
-    #     co_occurences_path =  os.path.join(os.path.dirname(__file__),
-    #      '../resources', language + '_co_occurences')
-    #     if os.path.exists(co_occurences_path):
-    #         co_occurences_file = open(co_occurences_path, 'rb')
-    #         occurences, frequency = pickle.load(co_occurences_file)
-    #     else:
-    #         dest_directory = DEST_DIRECTORY_EN
-    #         for split in ['BlurbGenreCollection_EN_train.txt', 'BlurbGenreCollection_EN_dev.txt']:
-    #             for filename in os.listdir(join(dest_directory, split)):
-    #                 soup = BeautifulSoup(open(join(dest_directory, split), 'rt').read(), "html.parser")
-    #                 for book in soup.findAll('book'):
-    #                     genres = set([])
-    #                     book_soup = BeautifulSoup(str(book), "html.parser")
-    #                     for t in book_soup.findAll('topics'):
-    #                         s1 = BeautifulSoup(str(t), "html.parser")
-    #                         structure = ['d0', 'd1', 'd2', 'd3']
-    #                         for i in range(0, len(structure)):
-    #                             for t1 in s1.findAll(structure[i]):
-    #                                 hierarchy.add(str(t1.string))
-    #                                 genres.add(str(t1.string))
-    #                     if genres in occurences:
-    #                         frequency[occurences.index(genres)] +=1
-    #                     else:
-    #                         occurences.append(genres)
-    #                         frequency.append(1)
-    #         co_occurence_file = open(co_occurences_path, 'wb')
-    #         pickle.dump([occurences, frequency], co_occurence_file)
-    #
-    #     occurences = zip(occurences, frequency)
-    #     occurences = sorted(occurences, key=operator.itemgetter(1), reverse = True)
-    #
-    #     return [hierarchy, occurences]
 
 
 
