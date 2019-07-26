@@ -55,7 +55,7 @@ python -m spacy download en_core_web_sm
  
 5. Install word embeddings for the English language, e.g.:
 ```
-mkdir resources && cd resources && wget https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.en.vec
+mkdir resources && cd resources && wget https://dl.fbaipublicfiles.com/fasttext/vectors-wiki/wiki.en.vec
 ``` 
 We recommend to put them into a ./resources folder. Please ensure to adjust the path and filename in case you decide to use different embeddings/path.
 
