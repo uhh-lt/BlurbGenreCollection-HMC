@@ -1,4 +1,4 @@
-# BlurbGenreCollection_Classification: Multi-label text classification of writing genres using capsule networks
+# BlurbGenreCollection_Classification: Hierarchical text classification of categories using capsule networks
 
 This page contains the implementation of several neural network architectures (CNN, LSTM, capsule network) designed for a multi-label text classification task with an underlying hierarchical structure.
 
@@ -57,7 +57,7 @@ cd resources && wget https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.en
 ``` 
 We recommend to put them into a ./resources folder. Please ensure to adjust the path and filename in case you decide to use different embeddings/path.
 
-# Multi-label Classification
+# Hierarchical Multi-label Classification
 
 Running the main.py will run the complete Pipeline if in train mode: Loading the data, preprocessing and training the classifier. 
 The preprocessed data is stored in the resources folder, to save time in sequential runs. Same applies to the computation of the embedding matrix, which is stored for a fixed sequence length.
@@ -118,4 +118,3 @@ CNN settings:
 
 
 For further inquries: 5aly@informatik.uni-hamburg.de
-
