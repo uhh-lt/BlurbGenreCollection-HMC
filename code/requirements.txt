@@ -21,9 +21,8 @@ Scrapy==1.0.3
 spacy==2.0.10
 spyder==2.3.8
 stop-words==2015.2.23.1
-tensorflow==1.4.1
-tensorflow-gpu==1.4.1
-tensorflow-tensorboard==0.4.0
+tensorflow
+tensorflow-gpu
 termcolor==1.1.0
 treetaggerwrapper==2.2.4
 ujson==1.35
