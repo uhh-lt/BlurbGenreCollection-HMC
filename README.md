@@ -1,4 +1,4 @@
-# BlurbGenreCollection_Classification: Hierarchical text classification of categories using capsule networks
+# BlurbGenreCollection-HMC: Hierarchical classification of text with capsule networks
 
 This page contains the implementation of several neural network architectures (CNN, LSTM, capsule network) designed for a multi-label text classification task with an underlying hierarchical structure.
 
