@@ -125,9 +125,6 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
         X_train = atomic_load_data(spacy, lowfreq, X_train)
         X_test = atomic_load_data(spacy, lowfreq, X_test)
         X_dev = atomic_load_data(spacy, lowfreq, X_dev)
-        # y_train = [set(np.asarray(label).ravel()) for label in y_train]
-        # y_dev = [set(np.asarray(label).ravel()) for label in y_dev]
-        # y_test = [set(np.asarray(label).ravel()) for label in y_test]
 
         data['X_train'] = X_train
         data['y_train'] = y_train

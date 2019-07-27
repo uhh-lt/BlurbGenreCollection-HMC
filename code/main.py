@@ -28,7 +28,6 @@ import json
 import os
 import scipy
 from networks import create_model_cnn, create_model_lstm, create_model_capsule
-from evaluation import analysis
 import pickle
 
 from keras.callbacks import LearningRateScheduler
@@ -97,17 +96,6 @@ class Metrics_eval(Callback):
                  str(f1_macro) + '\n' + str(f1) + '\n' + str(acc)).replace(".", ","))
 
 
-
-def create_machine_plots(m_type):
-    """
-    Plots the neural network with keras vis. capabilities
-    """
-    model = create_model(preload = True)
-    plot_model(model, to_file=os.path.join(os.path.dirname(__file__),
-     'model_' + args.classifier + 'cnn.png'), show_shapes=True)
-
-
-
 def train(model, save = True, early_stopping = True, validation = True):
     """
     Trains a neural network, can use early_stopping and validationsets
@@ -139,7 +127,7 @@ def train(model, save = True, early_stopping = True, validation = True):
 
 
 
-def test(model, data_l, label, do_analysis = False):
+def test(model, data_l, label):
     """
     Tests a neural network on the given data
     """
@@ -186,9 +174,6 @@ def test(model, data_l, label, do_analysis = False):
             print("Evaluating at level " + str(level) + "...")
             labels_pruned, outputs_pruned = remove_genres_not_level(args.lang,
              label, output, level, exact_level = False)
-            # for i in range(len(labels_pruned)):
-            #     if set(labels_pruned[i]) != set(label[i]):
-            #         print(label[i])
             f1 = f1_score(labels_pruned, outputs_pruned, average='micro')
             f1_macro = f1_score(labels_pruned, outputs_pruned, average='macro')
             recall = recall_score(labels_pruned, outputs_pruned, average='micro')
@@ -199,18 +184,13 @@ def test(model, data_l, label, do_analysis = False):
             print("F1_macro: " + str(f1_macro))
             print("Recall: " + str(recall))
             print("Precision: " + str(precision))
-            print("Accuracy: " + str(accuracy))
+            print("Accuracy: " + str(accuracy)+'\n')
 
     print("F1: " + str(f1))
     print("F1_macro: " + str(f1_macro))
     print("Recall: " + str(recall))
     print("Precision: " + str(precision))
     print("Accuracy: " + str(accuracy))
-
-    if do_analysis:
-        output_file = open(results_path, 'wb')
-        pickle.dump([data_l, label, output, binary_output, args], output_file)
-        analysis(data_l, label, output, binary_output, args, data)
 
     return results
 
@@ -283,9 +263,9 @@ def main():
     """
     global args
     parser = argparse.ArgumentParser(description="CNN for blurbs")
-    parser.add_argument('--mode', type=str, default='train_holdout', choices=['train_holdout', 'train_n_models_final', 'train_final', 'evaluate','cv', 'plot', 'train_holdout', 'outlier'], help="Mode of the system.")
+    parser.add_argument('--mode', type=str, default='train_validation', choices=['train_validation', 'train_test_n_runs', 'train_test'], help="Mode of the system.")
     parser.add_argument('--classifier', type=str, default='cnn', choices=['cnn','lstm', 'capsule'], help="Classifier architecture of the system.")
-    parser.add_argument('--lang', type=str, default='EN', choices=['DE','EN', 'RCV1', 'WOS', 'COMPQ'], help="Which dataset to use")
+    parser.add_argument('--lang', type=str, default='EN',  help="Which dataset to use")
     parser.add_argument('--dense_capsule_dim', type=int, default=16, help = 'Capsule dim of dense layer')
     parser.add_argument('--n_channels', type=int, default=50, help = 'number channels of primary capsules')
     parser.add_argument('--batch_size', type=int, default=32, help = 'Set minibatch size')
@@ -325,36 +305,14 @@ def run():
     classifier = args.classifier
 
     #used for training the model on train and dev, executes only once, simpliest version
-    if args.mode =='train_final':
+    if args.mode =='train_test':
         init_data(dev = False)
         model = create_model(preload = False)
         train(model,  early_stopping = args.use_early_stop, validation = False)
         test(model, data_l = data['X_test'], label = data['y_test'])
 
-    #DEPRECIATED - runs crossvalidation
-    elif args.mode =='cv':
-        init_data(dev = False)
-        grid_search(args.classifier)
-
-    #evaluates model, model needed to be saved in checkpoints
-    elif args.mode == 'evaluate':
-        init_data(dev = False)
-        model = create_model(preload = True)
-        test(model, do_analysis = True, data_l = data['X_test'], label = data['y_test'])
-
-    #test on dataset with blurbs that have labels with below threshold occurrence
-    elif args.mode == 'outlier':
-        init_data(dev = False, outlier = True)
-        model = create_model(preload = True)
-        test(model, do_analysis = False, data_l = data['X_outlier'], label = data['y_outlier'])
-
-
-    #create graph of model, not tested for capsule
-    elif args.mode == 'plot':
-        create_machine_plots(args.classifier)
-
     #uses holdout to train n models. This mode used for parameter optimization
-    elif args.mode == 'train_holdout':
+    elif args.mode == 'train_validation':
         init_data(dev = True)
         results_dict = {}
         for i in range(args.iterations):
@@ -370,7 +328,7 @@ def run():
         for hierarchy in results_dict:
             save_scores(results_dict[hierarchy], hierarchy)
 
-    elif args.mode == 'train_n_models_final':
+    elif args.mode == 'train_test_n_runs':
         init_data(dev=False)
         results_dict = {}
         results = []

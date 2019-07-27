@@ -1,3 +1,4 @@
+
 """
 Author: Rami Aly, E-mail: `rami.aly@outlook.com`
 """
@@ -8,6 +9,14 @@ import operator
 import pickle
 
 class Loader_Interface:
+
+
+    """
+    Sets the name of the dataset to unique name for file storage
+    """
+    def _setName(self, name):
+        self._name = name
+
 
     """
     Loads text and labels of a dataset
@@ -36,7 +45,7 @@ class Loader_Interface:
         frequency = []
         hierarchy = set([])
         co_occurences_path =  os.path.join(os.path.dirname(__file__),
-         '../resources', 'co_occurences_COMPQ')
+         '../resources', 'co_occurences')
         if os.path.exists(co_occurences_path):
             co_occurences_file = open(co_occurences_path, 'rb')
             occurences, frequency = pickle.load(co_occurences_file)
