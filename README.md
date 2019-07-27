@@ -33,7 +33,9 @@ The system was tested on Debian/Ubuntu Linux with a GTX 1080TI and TITAN X.
   
    2. Or install your own Dataset:
    
-       The abstract class `loader_abstract` needs to be extended by your custom class that loads your dataset. Please adjust the return values of the methods to match the descriptions. The method `load_data_multiLabel()` should return a list of three sets: train, dev and test. Each collection is a list of tuples with each tuple being `(String, Set of Strings)` for the text and its respective labels. The method `read_relations()` only needs to be implemented if a hierarchy exists. It should contain two sets -- the first consists of relation-pairs `(parent, child)` as Strings and the second set contains genres that have neither a parent nor a child. Furthermore, replace the following line with the name of your new loader_class: ` data_helpers.py: Line 15`. For further reference, please take a look at `loader.py` which loads the BlurbGenreCollection dataset.
+       The abstract class `loader_abstract` needs to be extended by your custom class that loads your dataset. Please adjust the return values of the methods to match the descriptions. The method `load_data_multiLabel()` should return a list of three sets: train, dev and test. Each collection is a list of tuples with each tuple being `(String, Set of Strings)` for the text and its respective set of labels. 
+       
+The method `read_relations()` only needs to be implemented if a hierarchy exists. It should contain two sets -- the first consists of relation-pairs `(parent, child)` as Strings and the second set contains genres that have neither a parent nor a child. Furthermore, replace the following line with the name of your new loader_class: ` data_helpers.py: Line 15`. For further reference, please take a look at `loader.py` which loads the BlurbGenreCollection dataset.
       Finally, `read_all_genres` stores co_occurences in a file to make the loading process quicker -- if the dataset changes please adjust the name so that the correct co_occurences are being loaded (only for label hierarchy relevant).
          
 
@@ -53,7 +55,7 @@ python -m spacy download en_core_web_sm
  
 5. Install word embeddings for the English language, e.g.:
 ```
-cd resources && wget https://s3-us-west-1.amazonaws.com/fasttext-vectors/wiki.en.vec
+mkdir resources && cd resources && wget https://dl.fbaipublicfiles.com/fasttext/vectors-wiki/wiki.en.vec
 ``` 
 We recommend to put them into a ./resources folder. Please ensure to adjust the path and filename in case you decide to use different embeddings/path.
 
