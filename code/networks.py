@@ -25,7 +25,7 @@ import pickle
 
 
 def create_model_capsule(preload, embedding_dim, sequence_length, num_filters,
- language, num_classes, use_static, init_layer, vocabulary, learning_rate,  dense_capsule_dim, n_channels, routings = 3):
+ language, num_classes, use_static, init_layer, vocabulary, learning_rate,  dense_capsule_dim, n_channels, routings, dev):
     """
     Implementation of capsule network
     """
@@ -34,7 +34,7 @@ def create_model_capsule(preload, embedding_dim, sequence_length, num_filters,
     inputs = Input(shape=(sequence_length,), dtype='int32')
 
     embedding = pre_embedding(embedding_dim = embedding_dim, seq_length = sequence_length,
-        input = inputs, use_static = use_static, voc = vocabulary, lang = language)
+        input = inputs, use_static = use_static, voc = vocabulary, lang = language, dev = dev)
 
     if language == 'DE':
         primarycaps = PrimaryCap(embedding, dim_capsule=8, n_channels= 45, kernel_size=over_time_conv,
@@ -103,7 +103,7 @@ def co_occurence_weights(num_units, num_classes, language):
 
 
 def create_model_cnn(preload, embedding_dim, sequence_length, num_filters,
- language, num_classes, use_static, init_layer, vocabulary, learning_rate):
+ language, num_classes, use_static, init_layer, vocabulary, learning_rate, dev):
     """
     Implementation of Kims et al. CNN,
     """
@@ -112,7 +112,7 @@ def create_model_cnn(preload, embedding_dim, sequence_length, num_filters,
     embedding = None
     inputs = Input(shape=(sequence_length,), dtype='int32')
     embedding_1d = pre_embedding(embedding_dim = embedding_dim, seq_length = sequence_length,
-        input = inputs, use_static = use_static, voc = vocabulary, lang = language)
+        input = inputs, use_static = use_static, voc = vocabulary, lang = language, dev = dev)
     embedding = Reshape((sequence_length, embedding_dim, 1))(embedding_1d)
     conv_0 = Conv2D(num_filters, kernel_size=(filter_sizes[0], embedding_dim),
      padding='valid', kernel_initializer='normal', activation='relu',
@@ -156,7 +156,7 @@ def create_model_cnn(preload, embedding_dim, sequence_length, num_filters,
 
 
 def create_model_lstm(preload, embedding_dim, sequence_length, num_units,
- language, num_classes, use_static, init_layer, vocabulary, learning_rate):
+ language, num_classes, use_static, init_layer, vocabulary, learning_rate, dev):
     """
     Implementation of simple LSTM with recurrent dropout
     """
@@ -164,7 +164,7 @@ def create_model_lstm(preload, embedding_dim, sequence_length, num_units,
     model = Sequential()
     pre_embedding(model = model, embedding_dim = embedding_dim,
      seq_length = sequence_length, use_static = use_static,
-      voc = vocabulary, lang = language)
+      voc = vocabulary, lang = language, dev = dev)
     lstm_out = num_units
     model.add(LSTM(lstm_out, recurrent_dropout = 0.5))
     model.add(Dense(units=num_classes, activation='sigmoid'))
@@ -188,12 +188,16 @@ def create_model_lstm(preload, embedding_dim, sequence_length, num_units,
 
 
 
-def pre_embedding(embedding_dim, seq_length, use_static, voc, lang, input = None, model = None):
+def pre_embedding(embedding_dim, seq_length, use_static, voc, lang, input, dev, model = None):
     """
     Loads mebedding for model
     """
-    embed_saved_path =  os.path.join(os.path.dirname(__file__), '../resources',
-    'embed_' + str(lang) + '_' + str(seq_length) + '_' + "dev")
+    if dev:
+        embed_saved_path =  os.path.join(os.path.dirname(__file__), '../resources',
+        'embed_' + str(lang) + '_' + str(seq_length) + '_' + "validation")
+    else:
+        embed_saved_path =  os.path.join(os.path.dirname(__file__), '../resources',
+        'embed_' + str(lang) + '_' + str(seq_length) + '_' + "test")
     if os.path.exists(embed_saved_path):
         print("Loading Embedding Matrix...")
         embed_saved_file = open(embed_saved_path, 'rb')

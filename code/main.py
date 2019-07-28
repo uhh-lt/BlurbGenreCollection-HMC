@@ -196,7 +196,7 @@ def test(model, data_l, label):
 
 
 
-def model_cnn(preload = True):
+def model_cnn(dev, preload = False):
     """
     Creates CNN or loads it if available
     """
@@ -211,10 +211,10 @@ def model_cnn(preload = True):
     else:
         return create_model_cnn(preload, args.embed_dim, args.sequence_length,
          args.num_filters, args.lang,len(data['y_train'][0]), args.use_static,
-         args.init_layer, data['vocabulary'], args.learning_rate)
+         args.init_layer, data['vocabulary'], args.learning_rate, dev)
 
 
-def model_lstm(preload = True):
+def model_lstm(dev, preload = False):
     """
     Creates LSTM or loads it if available
     """
@@ -229,10 +229,10 @@ def model_lstm(preload = True):
     else:
         return create_model_lstm(preload, args.embed_dim, args.sequence_length,
          args.lstm_units, args.lang, len(data['y_train'][0]),
-          args.use_static, args.init_layer, data['vocabulary'], args.learning_rate)
+          args.use_static, args.init_layer, data['vocabulary'], args.learning_rate, dev)
 
 
-def model_capsule(preload = True):
+def model_capsule(dev, preload = False):
     """
     Creates capsule networkor loads it if available
     """
@@ -245,7 +245,7 @@ def model_capsule(preload = True):
         model = create_model_capsule(preload, args.embed_dim, args.sequence_length,
          args.num_filters, args.lang, len(data['y_train'][0]),
           args.use_static, args.init_layer, data['vocabulary'], args.learning_rate,
-          args.dense_capsule_dim, args.n_channels)
+          args.dense_capsule_dim, args.n_channels, 3, dev)
         model.load_weights(filepath)
         model.summary()
         return model
@@ -253,7 +253,7 @@ def model_capsule(preload = True):
         return create_model_capsule(preload, args.embed_dim, args.sequence_length,
          args.num_filters, args.lang, len(data['y_train'][0]),
           args.use_static, args.init_layer, data['vocabulary'], args.learning_rate,
-          args.dense_capsule_dim, args.n_channels)
+          args.dense_capsule_dim, args.n_channels, 3, dev)
 
 
 
@@ -307,7 +307,7 @@ def run():
     #used for training the model on train and dev, executes only once, simpliest version
     if args.mode =='train_test':
         init_data(dev = False)
-        model = create_model(preload = False)
+        model = create_model(dev = False, preload = False)
         train(model,  early_stopping = args.use_early_stop, validation = False)
         test(model, data_l = data['X_test'], label = data['y_test'])
 
@@ -316,7 +316,7 @@ def run():
         init_data(dev = True)
         results_dict = {}
         for i in range(args.iterations):
-            model = create_model(preload = False)
+            model = create_model(dev = True, preload = False)
             train(model, early_stopping = args.use_early_stop, validation = True, save = False)
 
             result_hierarchies = test(model, data_l = data['X_dev'], label = data['y_dev'])
@@ -333,7 +333,7 @@ def run():
         results_dict = {}
         results = []
         for i in range(args.iterations):
-            model = create_model(preload = False)
+            model = create_model(dev = False, preload = False)
             train(model, early_stopping = False, validation = False)
             result_hierarchies = test(model, data_l = data['X_test'], label = data['y_test'])
             for results in result_hierarchies:
@@ -349,7 +349,7 @@ def run():
     K.clear_session()
 
 
-def create_model(preload = True):
+def create_model(dev = False, preload = True):
     """
     General method to create model based on user arguments
     """
@@ -360,13 +360,13 @@ def create_model(preload = True):
     + str(args.learning_decay) + "__lang_" + args.lang)
     if args.classifier == 'lstm':
         args.filename = ('lstm__lstmUnits_' + str(args.lstm_units) + general_name)
-        return model_lstm(preload)
+        return model_lstm(dev, preload)
     elif args.classifier == 'cnn':
         args.filename = ('cnn__filters_' + str(args.num_filters) + general_name)
-        return model_cnn(preload)
+        return model_cnn(dev, preload)
     elif args.classifier == 'capsule':
         args.filename = ('capsule__filters_' + str(args.num_filters) + general_name)
-        return model_capsule(preload)
+        return model_capsule(dev, preload)
     print(args.filename)
 
 
@@ -383,11 +383,6 @@ def init_data(dev, outlier = False):
         data['X_dev'] = X_dev
         data['y_dev'] = y_dev
 
-    elif outlier:
-        X_train, y_train, X_test, y_test, vocabulary, vocabulary_inv, X_outlier, y_outlier =load_data(spacy = use_spacy, lowfreq = use_low_freq,
-         max_sequence_length =  args.sequence_length, type = args.lang, level = args.level, dev = False, outlier = True)
-        data['X_outlier'] = X_outlier
-        data['y_outlier'] = y_outlier
     else:
         X_train, y_train, X_test, y_test, vocabulary, vocabulary_inv = load_data(spacy = use_spacy, lowfreq = use_low_freq,
          max_sequence_length =  args.sequence_length, type = args.lang, level = args.level, dev = dev)

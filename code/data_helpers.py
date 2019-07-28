@@ -102,10 +102,9 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
     preprocessing of blurbs and labels of dataset
     """
     global ml
-    print(dataset)
+    use_dev_set = dev
     path = filename = os.path.join("..","resources")
     filename = os.path.join(path, dataset + "_" + "spacy_pruned")
-    print(filename)
 
     if not os.path.exists(path):
         os.makedirs(path)
@@ -134,6 +133,13 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
         data['y_dev'] = y_dev
         pickle.dump(data, fp)
 
+        if dev:
+            X_dev = data['X_dev']
+            y_dev = data['y_dev']
+        else:
+            X_train = data['X_train'] + data['X_dev']
+            y_train = data['y_train'] + data['y_dev']
+
     else:
         print("Loading preprocessed input...")
         with open(filename, 'rb') as fp:
@@ -156,7 +162,7 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
     y_train = ml.fit_transform(y_train)
     y_test = [[x for x in sample if x in ml.classes_] for sample in y_test]
     y_test = ml.transform(y_test)
-    if dev:
+    if use_dev_set:
         y_dev = [[x for x in sample if x in ml.classes_] for sample in y_dev]
         y_dev = ml.transform(y_dev)
         values = [X_train, X_dev, X_test, y_train, y_dev, y_test]
@@ -176,8 +182,6 @@ def atomic_load_data(spacy, lowfreq, x_text):
         x_text = [spacy_tokenizer_basic(x) for x in x_text]
 
     else:
-        #no string cleaning for russian
-        #x_text = [clean_str(sent) for sent in x_text]
         x_text = [s.split(" ") for s in x_text]
     if lowfreq:
         MIN_FRE = 2
@@ -344,7 +348,6 @@ def load_data(spacy=False, lowfreq= True, max_sequence_length = 200, type = 'EN'
     global data_loader
     if type == 'EN':
         data_loader = Blurb_Loader()
-
 
     if dev:
         data  = load_data_and_labels(spacy, lowfreq, type, level, dev)
