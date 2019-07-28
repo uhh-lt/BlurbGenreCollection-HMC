@@ -63,7 +63,6 @@ We recommend to put them into a ./resources folder. Please ensure to adjust the 
 
 Running the main.py will run the complete Pipeline if in train mode: Loading the data, preprocessing and training the classifier. 
 The preprocessed data is stored in the resources folder, to save time in sequential runs. Same applies to the computation of the embedding matrix, which is stored for a fixed sequence length.
-However, for the first execution, please run the train_ mode (or any mode that uses the dev set) so that the stored preprocessed token collections are generated for each split.  
 
 | Option |  Description | Default|
 |--------|-------------|---|
@@ -115,7 +114,7 @@ CNN settings:
 
 
 *Example:*  
-`python3.5 main.py --mode train_holdout --classifier cnn --lang EN --sequence_length 100 --learning_rate 0.001 --learning_decay 1 
+`python3.5 main.py --mode train_validation --classifier cnn --lang EN --sequence_length 100 --learning_rate 0.001 --learning_decay 1 
 `
 
 
