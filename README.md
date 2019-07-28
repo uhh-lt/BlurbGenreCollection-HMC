@@ -4,11 +4,11 @@ This page contains the implementation of several neural network architectures (C
 
 
 The neural networks take as an input a collection of lists of tokens of fixed length, that are referenced by their ID and, as well as a collection of label sets. In case a hierarchy is provided to the program, label correction methods can be applied to create consistent predictions in respect to  the underlying hierarchy. 
-Furthermore, the final layers of the neural networks can be pre-initilized with label co-occurrence, as described in [Baker et al.](http://aclweb.org/anthology/W17-2339).
+Furthermore, the final layers of the neural networks can be pre-initilized with label co-occurrence, as described in ([Baker et al.](http://aclweb.org/anthology/W17-2339)).
 
 The neural networks and an additional SVM baseline were applied to the BlurbGenreCollection_EN datset, consisting of book blurbs and their respective hierarchically structured writing genres. The datset can be downloaded on the [Language Technology page of the Universität Hamburg](https://www.inf.uni-hamburg.de/en/inst/ab/lt/resources/data/blurb-genre-collection.html).
 
-This page also consists of methods to evaluate the performance of each classifier. An in-depth description and evaluation of the neural networks on the BlurbGenreCollection datset can be found [here](https://www.inf.uni-hamburg.de/en/inst/ab/lt/teaching/theses/completed-theses/2018-ba-aly-blurbs.pdf).
+An in-depth description and evaluation of the neural networks on the BlurbGenreCollection datset can be found [here](https://www.inf.uni-hamburg.de/en/inst/ab/lt/teaching/theses/completed-theses/2018-ba-aly-blurbs.pdf).
 
 
 # System Requirement
@@ -63,7 +63,7 @@ We recommend to put them into a ./resources folder. Please ensure to adjust the 
 
 Running the main.py will run the complete Pipeline if in train mode: Loading the data, preprocessing and training the classifier. 
 The preprocessed data is stored in the resources folder, to save time in sequential runs. Same applies to the computation of the embedding matrix, which is stored for a fixed sequence length.
-However, for the first execution, please run the holdout_train mode (or any mode that uses the dev set) so that the stored preprocessed token collections are generated for each split.  
+However, for the first execution, please run the train_ mode (or any mode that uses the dev set) so that the stored preprocessed token collections are generated for each split.  
 
 | Option |  Description | Default|
 |--------|-------------|---|
