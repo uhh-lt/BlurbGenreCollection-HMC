@@ -121,9 +121,11 @@ def train(model, save = True, early_stopping = True, validation = True):
 
 
     if save:
+        save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'models')
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
         print("Saving current Model")
-        model.save(os.path.join(os.path.dirname(os.path.abspath(__file__)),
-             '../checkpoints', args.filename) + '.h5')
+        model.save(os.path.join(save_path, args.filename + '.h5'))
 
 
 

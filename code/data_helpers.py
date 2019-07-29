@@ -102,7 +102,6 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
     preprocessing of blurbs and labels of dataset
     """
     global ml
-    use_dev_set = dev
     path = filename = os.path.join("..","resources")
     filename = os.path.join(path, dataset + "_" + "spacy_pruned")
 
@@ -115,11 +114,12 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
 
         fp = open(filename, 'wb')
         data = {}
-        train, dev, test = data_loader.load_data_multiLabel()
+        #I am overriding here the variable dev, ups thats really bad!
+        train, dev_set, test = data_loader.load_data_multiLabel()
 
         X_train, y_train = ([x[0] for x in train], [x[1] for x in train])
         X_test, y_test = ([x[0] for x in test], [x[1] for x in test])
-        X_dev, y_dev = ([x[0] for x in dev], [x[1] for x in dev])
+        X_dev, y_dev = ([x[0] for x in dev_set], [x[1] for x in dev_set])
 
         X_train = atomic_load_data(spacy, lowfreq, X_train)
         X_test = atomic_load_data(spacy, lowfreq, X_test)
@@ -162,7 +162,7 @@ def load_data_and_labels(spacy, lowfreq, dataset, level, dev = False):
     y_train = ml.fit_transform(y_train)
     y_test = [[x for x in sample if x in ml.classes_] for sample in y_test]
     y_test = ml.transform(y_test)
-    if use_dev_set:
+    if dev:
         y_dev = [[x for x in sample if x in ml.classes_] for sample in y_dev]
         y_dev = ml.transform(y_dev)
         values = [X_train, X_dev, X_test, y_train, y_dev, y_test]
