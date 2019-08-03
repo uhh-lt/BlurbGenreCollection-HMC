@@ -87,7 +87,7 @@ The preprocessed data is stored in the resources folder, to save time in sequent
 
 | Option |  Description | Default|
 |--------|-------------|---|
-| --mode | Mode, e.g. train on dev using holdout, train on dev and train for testing(train_final) | train_holdout |
+| --mode | Mode, e.g. train and test on validation or test on test set (train_test) | train_validation |
 | --classifier | Select between CNN, LSTM and capsule | capsule |
 | --lang | Datset to be used | EN |
 | --level| Max Genre Level of the hierarchy| 1 |
