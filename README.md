@@ -18,7 +18,7 @@ The dataset published with this scientific work, namely BlurbGenreCollection, co
 If you use the code in this repository, e.g. as a baseline in your experiment or simply want to refer to this work, we kindly ask you to use the following citation:
 
 ```
-@inproceedings{aly-etal-2019-every,
+@inproceedings{aly-etal-2019-hmc-caps,
     title = "Hierarchical Multi-label Classification of Text with Capsule Networks",
     author = {Aly, Rami  and
       Remus, Steffen  and
