@@ -1,4 +1,4 @@
-# BlurbGenreCollection-HMC: Hierarchical classification of text with capsule networks
+# Hierarchical classification of text with capsule networks
 
 Capsule networks have been shown to demonstrate good performance on structured data in the area of visual inference. 
 In this paper we apply and compare simple shallow capsule networks for hierarchical multi-label text classification and show that they can perform superior to other neural networks, such as CNNs and LSTMs, and non-neural network architectures such as SVMs.
