@@ -2,9 +2,7 @@
 
 Capsule networks have been shown to demonstrate good performance on structured data in the area of visual inference. 
 In this paper we apply and compare simple shallow capsule networks for hierarchical multi-label text classification and show that they can perform superior to other neural networks, such as CNNs and LSTMs, and non-neural network architectures such as SVMs.
-
 For our experiments, we use the established Web of Science (WOS) dataset and introduce a new real-world scenario dataset, the BlurbGenreCollection (BGC).
-
 Our results confirm the hypothesis that capsule networks are especially advantageous for rare events and structurally diverse categories, which we attribute to their ability to combine latent encoded information.
 
 This repository contains the implementation of several neural network architectures (CNN, LSTM, Capsule Network) designed for multi-label text classification task with an underlying hierarchical structure in order to reproduce the results in the following scientific publication:
