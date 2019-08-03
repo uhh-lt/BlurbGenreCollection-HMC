@@ -1,14 +1,37 @@
 # BlurbGenreCollection-HMC: Hierarchical classification of text with capsule networks
 
-This page contains the implementation of several neural network architectures (CNN, LSTM, capsule network) designed for a multi-label text classification task with an underlying hierarchical structure.
+Capsule networks have been shown to demonstrate good performance on structured data in the area of visual inference. 
+In this paper we apply and compare simple shallow capsule networks for hierarchical multi-label text classification and show that they can perform superior to other neural networks, such as CNNs and LSTMs, and non-neural network architectures such as SVMs.
+
+For our experiments, we use the established Web of Science (WOS) dataset and introduce a new real-world scenario dataset, the BlurbGenreCollection (BGC).
+
+Our results confirm the hypothesis that capsule networks are especially advantageous for rare events and structurally diverse categories, which we attribute to their ability to combine latent encoded information.
+
+This repository contains the implementation of several neural network architectures (CNN, LSTM, Capsule Network) designed for multi-label text classification task with an underlying hierarchical structure in order to reproduce the results in the following scientific publication:
+
+  *Rami Aly, Steffen Remus, Chris Biemann (2019): **[Hierarchical Multi-label Classification of Text with Capsule Networks](https://www.aclweb.org/anthology/P19-2045/
+)**. In Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, Student Research Workshop, Florence, Italy. Association for Computational Linguistics*
 
 
-The neural networks take as an input a collection of lists of tokens of fixed length, that are referenced by their ID and, as well as a collection of label sets. In case a hierarchy is provided to the program, label correction methods can be applied to create consistent predictions in respect to  the underlying hierarchy. 
-Furthermore, the final layers of the neural networks can be pre-initilized with label co-occurrence, as described in ([Baker et al.](http://aclweb.org/anthology/W17-2339)).
+The dataset published with this scientific work, namely BlurbGenreCollection, consists of book blurbs and their respective hierarchically structured writing genres. The datset can be downloaded on the [Language Technology page of the Universität Hamburg](https://www.inf.uni-hamburg.de/en/inst/ab/lt/resources/data/blurb-genre-collection.html).
 
-The neural networks and an additional SVM baseline were applied to the BlurbGenreCollection_EN datset, consisting of book blurbs and their respective hierarchically structured writing genres. The datset can be downloaded on the [Language Technology page of the Universität Hamburg](https://www.inf.uni-hamburg.de/en/inst/ab/lt/resources/data/blurb-genre-collection.html).
+If you use the code in this repository, e.g. as a baseline in your experiment or simply want to refer to this work, we kindly ask you to use the following citation:
 
-An in-depth description and evaluation of the neural networks on the BlurbGenreCollection datset can be found [here](https://www.inf.uni-hamburg.de/en/inst/ab/lt/teaching/theses/completed-theses/2018-ba-aly-blurbs.pdf).
+```
+@inproceedings{aly-etal-2019-every,
+    title = "Hierarchical Multi-label Classification of Text with Capsule Networks",
+    author = {Aly, Rami  and
+      Remus, Steffen  and
+      Biemann, Chris},
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, Student Research Workshop",
+    month = jul,
+    year = "2019",
+    address = "Florence, Italy",
+    publisher = "Association for Computational Linguistics",
+    url = "https://www.aclweb.org/anthology/P19-2045",
+    pages = "323--330"
+}
+```
 
 
 # System Requirement
