@@ -8,7 +8,7 @@ Our results confirm the hypothesis that capsule networks are especially advantag
 This repository contains the implementation of several neural network architectures (CNN, LSTM, Capsule Network) designed for multi-label text classification task with an underlying hierarchical structure in order to reproduce the results in the following scientific publication:
 
   *Rami Aly, Steffen Remus, Chris Biemann (2019): **[Hierarchical Multi-label Classification of Text with Capsule Networks](https://www.aclweb.org/anthology/P19-2045/
-)**. In Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, Student Research Workshop, Florence, Italy. Association for Computational Linguistics*
+)**. In Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop, Florence, Italy. Association for Computational Linguistics*
 
 
 The dataset published with this scientific work, namely BlurbGenreCollection, consists of book blurbs and their respective hierarchically structured writing genres. The datset can be downloaded on the [Language Technology page of the Universität Hamburg](https://www.inf.uni-hamburg.de/en/inst/ab/lt/resources/data/blurb-genre-collection.html).
@@ -21,7 +21,7 @@ If you use the code in this repository, e.g. as a baseline in your experiment or
     author = {Aly, Rami  and
       Remus, Steffen  and
       Biemann, Chris},
-    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics, Student Research Workshop",
+    booktitle = "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics: Student Research Workshop",
     month = jul,
     year = "2019",
     address = "Florence, Italy",
