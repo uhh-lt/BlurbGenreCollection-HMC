@@ -1,3 +1,4 @@
+models/*
 crawler/EN/blurbs_en_backup/
 crawler/EN/en_blurbs_isbn_url.txt
 ref_data/

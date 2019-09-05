@@ -2,7 +2,6 @@
 Author: Rami Aly, E-mail: `rami.aly@outlook.com`
 """
 import numpy as np
-np.set_printoptions(threshold=np.nan)
 import re
 import itertools
 from collections import Counter
@@ -355,8 +354,8 @@ def load_data(spacy=False, lowfreq= True, max_sequence_length = 200, type = 'EN'
     else:
         X_train, X_test, y_train, y_test = load_data_and_labels(spacy, lowfreq, type, level, dev)
 
-
-    sentences_padded_train = pad_sequences(X_train, maxlen=max_sequence_length, dtype='str', padding = 'post', truncating ='post')
+    #sentences_padded_train = pad_sequences(X_train, maxlen=max_sequence_length, dtype='str', padding = 'post', truncating ='post')
+    sentences_padded_train = [sentence[:max_sequence_length] + ['0.0'] * (max_sequence_length - len(sentence)) for sentence in X_train]
     vocabulary_train, vocabulary_inv_train = build_vocab(sentences_padded_train)
     x, y = build_input_data(sentences_padded_train, y_train, vocabulary_train)
 
@@ -374,7 +373,10 @@ def load_data(spacy=False, lowfreq= True, max_sequence_length = 200, type = 'EN'
 
     X_test = [[a if a in vocabulary_train else UNSEEN_STRING for a in sentence] for sentence in X_test]
     sentences_padded_test = pad_sequences(X_test, maxlen=max_sequence_length, dtype='str', padding = 'post', truncating ='post')
+    sentences_padded_test = [sentence[:max_sequence_length] + ['0.0'] * (max_sequence_length - len(sentence)) for sentence in X_test]
     x_test, y_test = build_input_data(sentences_padded_test, y_test, vocabulary_train)
+
+    print("Vocabulary length", len(vocabulary_train))
 
     print("Training samples:" + str(x.shape) + ", Test samples:" + str(x_test.shape) + " Number of Genres:" + str(len(y[0])))
     if dev:

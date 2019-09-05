@@ -29,7 +29,7 @@ def create_model_capsule(preload, embedding_dim, sequence_length, num_filters,
     """
     Implementation of capsule network
     """
-    over_time_conv = 100#50
+    over_time_conv = 50#50
     #capsule_dim = 16
     inputs = Input(shape=(sequence_length,), dtype='int32')
 
@@ -188,7 +188,7 @@ def create_model_lstm(preload, embedding_dim, sequence_length, num_units,
 
 
 
-def pre_embedding(embedding_dim, seq_length, use_static, voc, lang, input, dev, model = None):
+def pre_embedding(embedding_dim, seq_length, use_static, voc, lang, dev,  input = None, model = None):
     """
     Loads mebedding for model
     """
@@ -228,18 +228,17 @@ def pre_embedding(embedding_dim, seq_length, use_static, voc, lang, input, dev, 
         print("Out of", len(voc.items()), "Words in dataset")
         embed_saved_file = open(embed_saved_path, 'wb')
         pickle.dump(embedding_matrix, embed_saved_file)
-
     trainable = not use_static
     if input != None:
-        embedding =  Embedding(len(voc) + 1,
-                                embedding_dim,
+        embedding =  Embedding(input_dim = len(voc) + 1,
+                                output_dim = embedding_dim,
                                 weights=[embedding_matrix],
                                 input_length=seq_length,
                                 trainable= trainable)(input)
         return embedding
     elif model != None:
-        model.add(Embedding(len(voc) + 1,
-                                embedding_dim,
+        model.add(Embedding(input_dim = len(voc) + 1,
+                                output_dim = embedding_dim,
                                 weights=[embedding_matrix],
                                 input_length=seq_length,
                                 trainable= trainable))
