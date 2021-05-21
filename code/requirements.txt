@@ -20,7 +20,7 @@ scipy==1.1.0
 spacy==2.1.8
 spyder==2.3.8
 stop-words==2015.2.23.1
-tensorflow==1.7.0
+tensorflow==2.5.0
 tensorflow-gpu==1.7.0
 termcolor==1.1.0
 treetaggerwrapper==2.2.4
